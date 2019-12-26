@@ -24,9 +24,13 @@ class SignInAuthenticator:
         print('Sign Up')
         email = input('email: ')
         password = input('password: ')
-
-        self.cur.execute(f"INSERT INTO users(email,password)  VALUES('{email}', '{password}') ")
-        self.db.commit()
+        try:
+            self.cur.execute(f"INSERT INTO users(email,password)  VALUES('{email}', '{password}')")
+            self.db.commit()
+        except sqlite3.Error as e:
+            if e != None:
+                print('email already exists try signing up with a different email')
+                self.signup()
         print('now u can login')
         self.login()
 
